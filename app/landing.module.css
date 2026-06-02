@@ -32,6 +32,8 @@
     position: absolute;
     width: 90vw;
     height: 100vh;
+    object-fit: contain;        /* preserve aspect ratio — no stretching */
+    object-position: center bottom;
     z-index: 2;
     will-change: transform, opacity;
 }
