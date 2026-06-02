@@ -1,65 +1,144 @@
+"use client";
+
+import styles from "@/app/landing.module.css";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+
+import Header from "@/components/header";
+
+// Grass
+import backgrass from "@/components/assets/backgrass.png";
+import frontgrass from "@/components/assets/frontgrass.png";
+
+// Knight
+import knight1 from "@/components/assets/knight1.png";
+import knight2 from "@/components/assets/knight2.png";
 
 export default function Home() {
+  const [progress, setProgress] = useState(0);
+  const targetRef = useRef(0);   // 0 = Knight1 state, 1 = Knight2 state
+  const currentRef = useRef(0);
+  const rafRef = useRef<number | null>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Smooth lerp toward target on every frame
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+    const tick = () => {
+      const next = lerp(currentRef.current, targetRef.current, 0.06);
+      const diff = Math.abs(next - currentRef.current);
+
+      if (diff > 0.0002) {
+        currentRef.current = next;
+        setProgress(next);
+        rafRef.current = requestAnimationFrame(tick);
+      } else {
+        // Snap to exact target when close enough
+        currentRef.current = targetRef.current;
+        setProgress(targetRef.current);
+        rafRef.current = null;
+      }
+    };
+
+    // Wheel: one scroll down → animate to Knight2, one scroll up → animate to Knight1
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      targetRef.current = e.deltaY > 0 ? 1 : 0;
+      if (!rafRef.current) {
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    };
+
+    // Touch support
+    let touchStartY = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+    const handleTouchEnd = (e: TouchEvent) => {
+      const delta = touchStartY - e.changedTouches[0].clientY;
+      if (Math.abs(delta) < 10) return; // ignore tiny taps
+      targetRef.current = delta > 0 ? 1 : 0;
+      if (!rafRef.current) {
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    };
+
+    const scene = sceneRef.current;
+    // Use the scene element so it doesn't intercept scroll on other pages
+    scene?.addEventListener("wheel", handleWheel, { passive: false });
+    scene?.addEventListener("touchstart", handleTouchStart, { passive: true });
+    scene?.addEventListener("touchend", handleTouchEnd, { passive: true });
+
+    return () => {
+      scene?.removeEventListener("wheel", handleWheel);
+      scene?.removeEventListener("touchstart", handleTouchStart);
+      scene?.removeEventListener("touchend", handleTouchEnd);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  // ── Scroll-driven values (ONLY knights + frontgrass) ──────────
+  const knightScale = 1 + progress * 0.2;           // 1.0 → 1.35
+  const grassScale = 1 + progress * 0.2;            // 1.0 → 1.20
+  const k1Opacity = Math.max(0, 1 - progress * 1.6); // fades out by ~62%
+  const k2Opacity = Math.min(1, Math.max(0, (progress - 0.25) * 2)); // fades in after 25%
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <div className={styles.fullContainer} ref={sceneRef}>
+      <Header />
+
+      {/* Description — completely static */}
+      <div className={styles.descriptionContainer}>
+        <p>&quot;Best systems operates flawlessly in the dark&quot;</p>
+      </div>
+
+      {/* Only these elements react to scroll */}
+      <div className={styles.knightContainer}>
+        {/* Back grass — static */}
+        <Image src={backgrass} alt="Back Grass" className={styles.backgrass} />
+
+        {/* Front grass — zoom only */}
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+          src={frontgrass}
+          alt="Front Grass"
+          className={styles.frontgrass}
+          style={{
+            transform: `translateY(1vw) scale(${grassScale})`,
+            transformOrigin: "bottom center",
+          }}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+
+        {/* Knight 1 — zooms in + fades out */}
+        <Image
+          src={knight1}
+          alt="First Knight"
+          className={styles.knight}
+          style={{
+            opacity: k1Opacity,
+            transform: `scale(${knightScale})`,
+            transformOrigin: "center bottom",
+          }}
+        />
+
+        {/* Knight 2 — same position, zooms in + fades in */}
+        <Image
+          src={knight2}
+          alt="Second Knight"
+          className={`${styles.knight} ${styles.knightOverlay}`}
+          style={{
+            opacity: k2Opacity,
+            transform: `scale(${knightScale})`,
+            transformOrigin: "center bottom",
+          }}
+        />
+      </div>
+
+      {/* Title — completely static */}
+      <div className={styles.titleContainer}>
+        <h3>SHADOW</h3>
+        <h1>ARCHITECT</h1>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Bowlby+One+SC&display=swap');
+
+/* ─── Full-screen container ───────────────────────────────────
+   overflow: hidden removes all scrollbars. Scroll gestures are
+   intercepted via wheel/touch events — no real page scroll.
+───────────────────────────────────────────────────────────── */
+
+.fullContainer {
+    width: 100vw;
+    height: 100vh;
+    background-image: url('@/components/assets/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;   /* no scrollbars ever */
+}
+
+/* ─── Knight + grass layer ────────────────────────────────── */
+
+.knightContainer {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Base knight — transforms driven by inline styles in JSX */
+.knight {
+    position: absolute;
+    width: 90vw;
+    height: 100vh;
+    z-index: 2;
+    will-change: transform, opacity;
+}
+
+/* Knight 2 sits exactly on top of Knight 1 */
+.knightOverlay {
+    z-index: 3;
+}
+
+/* ─── Grass ───────────────────────────────────────────────── */
+
+.backgrass {
+    position: absolute;
+    width: 100vw;
+    height: auto;
+    bottom: 0;
+    z-index: 0;
+    transform: translateY(2.5vw);   /* static — never changes */
+}
+
+/* transform driven via inline styles in JSX */
+.frontgrass {
+    position: absolute;
+    width: 100vw;
+    height: auto;
+    bottom: 0;
+    z-index: 1;
+    will-change: transform;
+}
+
+/* ─── Title (static) ──────────────────────────────────────── */
+
+.titleContainer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 20vh;
+    line-height: 0.8;
+    pointer-events: none;
+}
+
+.titleContainer h3 {
+    color: #4d1a1a;
+    font-size: 8vw;
+    font-family: "Bowlby One SC", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-shadow: 5px 5px 0px rgb(209, 1, 1);
+}
+
+.titleContainer h1 {
+    color: #836d6d;
+    font-size: 12vw;
+    font-family: "Bowlby One SC", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-shadow: 8px 8px 0px rgb(209, 1, 1);
+}
+
+/* ─── Description (static) ────────────────────────────────── */
+
+.descriptionContainer {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 5vh;
+    pointer-events: none;
+}
+
+.descriptionContainer p {
+    color: #ffffff;
+    font-size: 2vw;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 400;
+    font-style: italic;
+}

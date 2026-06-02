@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Bowlby+One+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+
+/* ─── Header bar ──────────────────────────────────────────── */
+
+.headerContainer {
+    position: absolute;
+    z-index: 99;
+    width: 100%;
+    height: auto;
+    top: 0;
+    left: 0;
+    padding: 2.5vh 2vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    /* Subtle dark gradient so links stay readable over any bg */
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.45) 0%,
+            transparent 100%);
+}
+
+/* ─── Logo / brand ────────────────────────────────────────── */
+
+.headerContainer h1 {
+    color: #e1e1e1;
+    font-size: 2.4vw;
+    font-family: "Bowlby One SC", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-shadow: 3px 5px 0px rgb(209, 1, 1);
+    letter-spacing: 0.05em;
+}
+
+/* ─── Nav list ────────────────────────────────────────────── */
+
+.navLinks {
+    list-style: none;
+    display: flex;
+    gap: 0.8vw;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.navLinks li {
+    margin: 0;
+}
+
+/* ─── Nav link ────────────────────────────────────────────── */
+
+.navLinks li a {
+    position: relative;
+    display: inline-block;
+    color: rgba(225, 225, 225, 0.75);
+    font-size: 1.3vw;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.6em 1.2em;
+    cursor: pointer;
+    transition:
+        color 0.3s ease,
+        letter-spacing 0.3s ease;
+}
+
+/* Animated underline — red sweep from left */
+.navLinks li a::after {
+    content: '';
+    position: absolute;
+    left: 1.2em;
+    bottom: 0;
+    width: calc(100% - 2.4em);
+    height: 1.5px;
+    background: rgb(209, 1, 1);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dot indicator — appears above the link */
+.navLinks li a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgb(209, 1, 1);
+    box-shadow: 0 0 8px 2px rgba(209, 1, 1, 0.7);
+    transition:
+        transform 0.3s ease,
+        opacity 0.3s ease;
+    opacity: 0;
+}
+
+/* ─── Hover state ─────────────────────────────────────────── */
+
+.navLinks li a:hover {
+    color: #ffffff;
+    letter-spacing: 0.28em;
+    text-shadow: 0 0 12px rgba(209, 1, 1, 0.5);
+}
+
+.navLinks li a:hover::after {
+    transform: scaleX(1);
+}
+
+.navLinks li a:hover::before {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+}
