@@ -84,7 +84,7 @@ export default function Home() {
   const grassScale = 1 + progress * 0.2;            // 1.0 → 1.20
   const k1Opacity = Math.max(0, 1 - progress * 1.6); // fades out by ~62%
   const k2Opacity = Math.min(1, Math.max(0, (progress - 0.25) * 2)); // fades in after 25%
-  
+
   // Title & description fade out as we transition to the second page
   const titleOpacity = Math.max(0, 1 - progress * 2.5); // completely gone by 40% progress
   const descOpacity = Math.max(0, 1 - progress * 2.5);
@@ -148,9 +148,33 @@ export default function Home() {
         <h1>ARCHITECT</h1>
       </div>
 
+      {/* Ambient Particles */}
+      <div className={styles.particles} aria-hidden="true">
+        {Array.from({ length: 12 }).map((_, i) => (
+          <div key={i} className={styles.particle} style={{ "--i": i } as React.CSSProperties} />
+        ))}
+      </div>
+
+      {/* Rotating Border Ring */}
+      <div className={styles.borderRing} aria-hidden="true">
+        <svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" className={styles.borderRingSvg}>
+          <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(209,1,1,0.15)" strokeWidth="1" strokeDasharray="8 24" />
+          <circle cx="400" cy="400" r="350" fill="none" stroke="rgba(209,1,1,0.08)" strokeWidth="1" strokeDasharray="4 40" />
+          {/* Rotating diamonds */}
+          <polygon points="400,20 414,34 400,48 386,34" fill="#d10101" opacity="0.9" className={styles.orbDot} />
+          <polygon points="400,752 414,766 400,780 386,766" fill="#d10101" opacity="0.9" className={styles.orbDot} />
+          <polygon points="20,400 34,386 48,400 34,414" fill="#d10101" opacity="0.9" className={styles.orbDot} />
+          <polygon points="752,400 766,386 780,400 766,414" fill="#d10101" opacity="0.9" className={styles.orbDot} />
+        </svg>
+      </div>
+
       {/* HUD Left Panel */}
       <div className={`${styles.hudLeft} ${showSecondHUD ? styles.active : ""}`}>
         <div className={styles.hudLeftFrame}>
+          {/* Decorative scan line */}
+          <div className={styles.scanLine} />
+          {/* Rotating corner ornament (top-right of left panel) */}
+          <div className={styles.cornerOrnament} />
           <div className={styles.hudLeftTitleContainer}>
             <h2 className={styles.hudLeftTitle}>SHADOW ARCHITECH</h2>
           </div>
@@ -163,16 +187,16 @@ export default function Home() {
           <div className={styles.hudLeftMetaContainer}>
             <div className={styles.hudLeftMetaItem}>
               <svg className={styles.hudGemIcon} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="50,15 80,38 80,62 50,85 20,62 20,38" fill="url(#gemGradLeft1)" stroke="#d10101" strokeWidth="2"/>
-                <polygon points="50,15 50,85" stroke="#ff4d4d" strokeWidth="1" opacity="0.6"/>
-                <polygon points="20,38 80,38" stroke="#ff4d4d" strokeWidth="1" opacity="0.6"/>
-                <polygon points="20,62 80,62" stroke="#ff4d4d" strokeWidth="1" opacity="0.6"/>
-                <polygon points="50,15 20,38 50,38" fill="#ff6666" opacity="0.25"/>
-                <polygon points="50,15 80,38 50,38" fill="#ff1a1a" opacity="0.35"/>
-                <polygon points="20,38 20,62 50,62" fill="#990000" opacity="0.25"/>
-                <polygon points="80,38 80,62 50,62" fill="#d10101" opacity="0.45"/>
-                <polygon points="20,62 50,85 50,62" fill="#660000" opacity="0.35"/>
-                <polygon points="80,62 50,85 50,62" fill="#330000" opacity="0.55"/>
+                <polygon points="50,15 80,38 80,62 50,85 20,62 20,38" fill="url(#gemGradLeft1)" stroke="#d10101" strokeWidth="2" />
+                <polygon points="50,15 50,85" stroke="#ff4d4d" strokeWidth="1" opacity="0.6" />
+                <polygon points="20,38 80,38" stroke="#ff4d4d" strokeWidth="1" opacity="0.6" />
+                <polygon points="20,62 80,62" stroke="#ff4d4d" strokeWidth="1" opacity="0.6" />
+                <polygon points="50,15 20,38 50,38" fill="#ff6666" opacity="0.25" />
+                <polygon points="50,15 80,38 50,38" fill="#ff1a1a" opacity="0.35" />
+                <polygon points="20,38 20,62 50,62" fill="#990000" opacity="0.25" />
+                <polygon points="80,38 80,62 50,62" fill="#d10101" opacity="0.45" />
+                <polygon points="20,62 50,85 50,62" fill="#660000" opacity="0.35" />
+                <polygon points="80,62 50,85 50,62" fill="#330000" opacity="0.55" />
                 <defs>
                   <radialGradient id="gemGradLeft1" cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stopColor="#ff6666" />
@@ -185,16 +209,16 @@ export default function Home() {
             </div>
             <div className={styles.hudLeftMetaItem}>
               <svg className={styles.hudGemIcon} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="50,15 80,38 80,62 50,85 20,62 20,38" fill="url(#gemGradLeft2)" stroke="#d10101" strokeWidth="2"/>
-                <polygon points="50,15 50,85" stroke="#ff4d4d" strokeWidth="1" opacity="0.6"/>
-                <polygon points="20,38 80,38" stroke="#ff4d4d" strokeWidth="1" opacity="0.6"/>
-                <polygon points="20,62 80,62" stroke="#ff4d4d" strokeWidth="1" opacity="0.6"/>
-                <polygon points="50,15 20,38 50,38" fill="#ff6666" opacity="0.25"/>
-                <polygon points="50,15 80,38 50,38" fill="#ff1a1a" opacity="0.35"/>
-                <polygon points="20,38 20,62 50,62" fill="#990000" opacity="0.25"/>
-                <polygon points="80,38 80,62 50,62" fill="#d10101" opacity="0.45"/>
-                <polygon points="20,62 50,85 50,62" fill="#660000" opacity="0.35"/>
-                <polygon points="80,62 50,85 50,62" fill="#330000" opacity="0.55"/>
+                <polygon points="50,15 80,38 80,62 50,85 20,62 20,38" fill="url(#gemGradLeft2)" stroke="#d10101" strokeWidth="2" />
+                <polygon points="50,15 50,85" stroke="#ff4d4d" strokeWidth="1" opacity="0.6" />
+                <polygon points="20,38 80,38" stroke="#ff4d4d" strokeWidth="1" opacity="0.6" />
+                <polygon points="20,62 80,62" stroke="#ff4d4d" strokeWidth="1" opacity="0.6" />
+                <polygon points="50,15 20,38 50,38" fill="#ff6666" opacity="0.25" />
+                <polygon points="50,15 80,38 50,38" fill="#ff1a1a" opacity="0.35" />
+                <polygon points="20,38 20,62 50,62" fill="#990000" opacity="0.25" />
+                <polygon points="80,38 80,62 50,62" fill="#d10101" opacity="0.45" />
+                <polygon points="20,62 50,85 50,62" fill="#660000" opacity="0.35" />
+                <polygon points="80,62 50,85 50,62" fill="#330000" opacity="0.55" />
                 <defs>
                   <radialGradient id="gemGradLeft2" cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stopColor="#ff6666" />
@@ -212,16 +236,31 @@ export default function Home() {
       {/* HUD Right Panel */}
       <div className={`${styles.hudRight} ${showSecondHUD ? styles.active : ""}`}>
         <div className={styles.playerPlate}>
-          <div className={styles.statBarContainer}>
-            <div className={styles.statBarFill} />
-          </div>
-          <div className={styles.playerNameContainer}>
+          {/* Rotating corner ornament */}
+          <div className={styles.cornerOrnament} />
+          {/* Scan line sweep */}
+          <div className={styles.scanLine} />
+
+          <div className={styles.playerNameRow}>
             <span className={styles.playerName}>SHINJIN</span>
-            <div className={styles.stripes}>
-              <div className={styles.stripe} />
-              <div className={styles.stripe} />
-              <div className={styles.stripe} />
-              <div className={styles.stripe} />
+            <span className={styles.playerLevel}>LV.99</span>
+          </div>
+
+          {/* Health Bar */}
+          <div className={styles.statRow}>
+            <span className={styles.statLabel}>HP</span>
+            <div className={styles.statBarTrack}>
+              <div className={`${styles.statBarFill} ${styles.healthFill}`} />
+              <span className={styles.statValue}>9999 / 9999</span>
+            </div>
+          </div>
+
+          {/* Mana Bar */}
+          <div className={styles.statRow}>
+            <span className={styles.statLabel}>MP</span>
+            <div className={styles.statBarTrack}>
+              <div className={`${styles.statBarFill} ${styles.manaFill}`} />
+              <span className={styles.statValue}>999 / 999</span>
             </div>
           </div>
         </div>

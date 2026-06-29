@@ -1,9 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bowlby+One+SC&display=swap');
 
-/* ─── Full-screen container ───────────────────────────────────
-   overflow: hidden removes all scrollbars. Scroll gestures are
-   intercepted via wheel/touch events — no real page scroll.
-───────────────────────────────────────────────────────────── */
+/* ─── Full-screen container ─────────────────────────────────── */
 
 .fullContainer {
     width: 100vw;
@@ -13,10 +10,10 @@
     background-position: center;
     background-repeat: no-repeat;
     position: relative;
-    overflow: hidden;   /* no scrollbars ever */
+    overflow: hidden;
 }
 
-/* ─── Knight + grass layer ────────────────────────────────── */
+/* ─── Knight + grass layer ──────────────────────────────────── */
 
 .knightContainer {
     position: absolute;
@@ -27,23 +24,21 @@
     justify-content: center;
 }
 
-/* Base knight — transforms driven by inline styles in JSX */
 .knight {
     position: absolute;
     width: 90vw;
     height: 100vh;
-    object-fit: contain;        /* preserve aspect ratio — no stretching */
+    object-fit: contain;
     object-position: center bottom;
     z-index: 2;
     will-change: transform, opacity;
 }
 
-/* Knight 2 sits exactly on top of Knight 1 */
 .knightOverlay {
     z-index: 3;
 }
 
-/* ─── Grass ───────────────────────────────────────────────── */
+/* ─── Grass ─────────────────────────────────────────────────── */
 
 .backgrass {
     position: absolute;
@@ -51,10 +46,9 @@
     height: auto;
     bottom: 0;
     z-index: 0;
-    transform: translateY(2.5vw);   /* static — never changes */
+    transform: translateY(2.5vw);
 }
 
-/* transform driven via inline styles in JSX */
 .frontgrass {
     position: absolute;
     width: 100vw;
@@ -64,7 +58,7 @@
     will-change: transform;
 }
 
-/* ─── Title (static) ──────────────────────────────────────── */
+/* ─── Title ─────────────────────────────────────────────────── */
 
 .titleContainer {
     position: absolute;
@@ -97,7 +91,7 @@
     text-shadow: 8px 8px 0px rgb(209, 1, 1);
 }
 
-/* ─── Description (static) ────────────────────────────────── */
+/* ─── Description ───────────────────────────────────────────── */
 
 .descriptionContainer {
     position: absolute;
@@ -121,7 +115,71 @@
     font-style: italic;
 }
 
-/* ─── HUD Left Panel ───────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   AMBIENT PARTICLES
+   ═══════════════════════════════════════════════════════════════ */
+
+.particles {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #d10101;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #d10101, 0 0 12px rgba(209,1,1,0.4);
+    /* Spread particles across the viewport using --i */
+    left: calc(5% + (var(--i) * 8%));
+    bottom: -10px;
+    animation: floatParticle calc(4s + var(--i) * 0.7s) ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.5s);
+    opacity: 0;
+}
+
+@keyframes floatParticle {
+    0%   { transform: translateY(0)   scale(1);   opacity: 0; }
+    10%  { opacity: 0.9; }
+    80%  { opacity: 0.6; }
+    100% { transform: translateY(-95vh) scale(0.3); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ROTATING BORDER RING
+   ═══════════════════════════════════════════════════════════════ */
+
+.borderRing {
+    position: absolute;
+    /* Center it over the knight — visually the middle of the scene */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(90vw, 90vh);
+    height: min(90vw, 90vh);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.borderRingSvg {
+    width: 100%;
+    height: 100%;
+    animation: ringRotate 20s linear infinite;
+    filter: drop-shadow(0 0 6px rgba(209,1,1,0.5));
+}
+
+@keyframes ringRotate {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HUD LEFT PANEL
+   ═══════════════════════════════════════════════════════════════ */
 
 .hudLeft {
     position: absolute;
@@ -145,28 +203,39 @@
 }
 
 .hudLeftFrame {
-    border: 1px solid rgba(209, 1, 1, 0.3);
+    border: 1px solid rgba(209, 1, 1, 0.4);
     padding: 2rem;
     position: relative;
-    background: rgba(0, 0, 0, 0.55);
+    background: rgba(0, 0, 0, 0.38);
     backdrop-filter: blur(12px);
-    border-radius: 4px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(209, 1, 1, 0.05);
+    /* Diagonal cut on the upper-left corner */
+    clip-path: polygon(22px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 22px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(209, 1, 1, 0.06);
 }
 
-/* Corner bracket details */
+/* Upper-left diagonal edge accent (bright cut line) */
 .hudLeftFrame::before {
     content: '';
     position: absolute;
-    top: -1px;
-    left: -1px;
-    width: 20px;
-    height: 20px;
-    border-top: 3px solid #d10101;
-    border-left: 3px solid #d10101;
+    /* Diagonal line from top-left cut */
+    top: 0;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(
+        135deg,
+        transparent 0%,
+        transparent calc(50% - 1px),
+        #d10101 calc(50% - 1px),
+        #d10101 calc(50% + 1px),
+        transparent calc(50% + 1px)
+    );
     pointer-events: none;
+    z-index: 1;
+    filter: drop-shadow(0 0 4px #d10101);
 }
 
+/* Bottom-right corner bracket */
 .hudLeftFrame::after {
     content: '';
     position: absolute;
@@ -174,10 +243,48 @@
     right: -1px;
     width: 20px;
     height: 20px;
-    border-bottom: 3px solid #d10101;
-    border-right: 3px solid #d10101;
+    border-bottom: 2px solid #d10101;
+    border-right: 2px solid #d10101;
     pointer-events: none;
 }
+
+/* Animated pulsing glow on active */
+.hudLeft.active .hudLeftFrame {
+    animation: hudPulse 3s ease-in-out infinite 0.8s;
+}
+
+@keyframes hudPulse {
+    0%, 100% { box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(209,1,1,0.06); }
+    50%       { box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 30px rgba(209,1,1,0.14); }
+}
+/* Decorative scan line that sweeps across the panel */
+.scanLine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(209,1,1,0.6), transparent);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 10;
+}
+
+.hudLeft.active .scanLine {
+    animation: scanSweep 5s linear infinite 1s;
+}
+
+.hudRight.active .scanLine {
+    animation: scanSweep 5s linear infinite 1.5s;
+}
+
+@keyframes scanSweep {
+    0%   { top: 0%;   opacity: 0; }
+    5%   { opacity: 1; }
+    90%  { opacity: 0.6; }
+    100% { top: 100%; opacity: 0; }
+}
+
 
 .hudLeftTitleContainer {
     display: flex;
@@ -253,7 +360,20 @@
     animation: gemSpawn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s forwards;
 }
 
-/* ─── HUD Right Panel ────────────────────────────────────── */
+/* Gem continuous spin on active */
+.hudLeft.active .hudGemIcon:nth-child(1) {
+    animation: gemSpawn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s forwards,
+               gemFloat 3s ease-in-out 1.2s infinite;
+}
+
+@keyframes gemFloat {
+    0%, 100% { transform: scale(1) translateY(0); filter: drop-shadow(0 0 6px #d10101); }
+    50%       { transform: scale(1) translateY(-3px); filter: drop-shadow(0 0 10px #ff3b3b); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HUD RIGHT PANEL
+   ═══════════════════════════════════════════════════════════════ */
 
 .hudRight {
     position: absolute;
@@ -276,75 +396,110 @@
 }
 
 .playerPlate {
-    border: 1px solid rgba(209, 1, 1, 0.3);
-    padding: 1.5rem;
-    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(209, 1, 1, 0.4);
+    padding: 1.4rem 1.6rem 1.6rem;
+    background: rgba(30, 10, 10, 0.45);
     backdrop-filter: blur(12px);
     position: relative;
-    border-radius: 4px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(209, 1, 1, 0.05);
+    /* Diagonal cut on the upper-left corner */
+    clip-path: polygon(22px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 22px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(209, 1, 1, 0.06);
 }
 
+/* Diagonal cut accent line on upper-left */
 .playerPlate::before {
     content: '';
     position: absolute;
-    top: -1px;
-    right: -1px;
-    width: 20px;
-    height: 20px;
-    border-top: 3px solid #d10101;
-    border-right: 3px solid #d10101;
+    top: 0;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(
+        135deg,
+        transparent 0%,
+        transparent calc(50% - 1px),
+        #d10101 calc(50% - 1px),
+        #d10101 calc(50% + 1px),
+        transparent calc(50% + 1px)
+    );
     pointer-events: none;
+    z-index: 1;
+    filter: drop-shadow(0 0 4px #d10101);
 }
 
+/* Bottom-right corner bracket */
 .playerPlate::after {
     content: '';
     position: absolute;
     bottom: -1px;
-    left: -1px;
+    right: -1px;
     width: 20px;
     height: 20px;
-    border-bottom: 3px solid #d10101;
-    border-left: 3px solid #d10101;
+    border-bottom: 2px solid #d10101;
+    border-right: 2px solid #d10101;
     pointer-events: none;
 }
 
-/* Status / HP Bar */
-.statBarContainer {
-    width: 100%;
-    height: 18px;
-    border: 1px solid rgba(209, 1, 1, 0.6);
-    background: rgba(209, 1, 1, 0.1);
-    margin-bottom: 1rem;
-    position: relative;
-    overflow: hidden;
+/* Pulsing glow on player plate when active */
+.hudRight.active .playerPlate {
+    animation: hudPulse 3s ease-in-out infinite 0.8s;
+}
+
+/* ── Rotating corner ornament ── */
+.cornerOrnament {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 36px;
+    height: 36px;
+    pointer-events: none;
+}
+
+.cornerOrnament::before,
+.cornerOrnament::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid transparent;
+}
+
+.cornerOrnament::before {
+    width: 28px;
+    height: 28px;
+    border-top-color: #d10101;
+    border-right-color: #d10101;
     border-radius: 2px;
+    animation: ornamentSpin 3s linear infinite;
 }
 
-.statBarFill {
-    height: 100%;
-    background: linear-gradient(90deg, #d10101 0%, #ff3b3b 50%, #d10101 100%);
-    background-size: 200% 100%;
-    width: 0%;
-    box-shadow: 0 0 12px rgba(209, 1, 1, 0.8);
-    transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
-    animation: barShine 3s linear infinite;
+.cornerOrnament::after {
+    width: 16px;
+    height: 16px;
+    border-bottom-color: rgba(209,1,1,0.5);
+    border-left-color: rgba(209,1,1,0.5);
+    border-radius: 1px;
+    animation: ornamentSpin 2s linear infinite reverse;
 }
 
-.hudRight.active .statBarFill {
-    width: 100%;
+@keyframes ornamentSpin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-.playerNameContainer {
+/* ── Player name row ── */
+.playerNameRow {
     display: flex;
+    align-items: baseline;
     justify-content: space-between;
-    align-items: center;
+    margin-bottom: 1rem;
 }
 
 .playerName {
     color: #ffffff;
     font-family: var(--font-sans), sans-serif;
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 900;
     letter-spacing: 3px;
     text-transform: uppercase;
@@ -356,31 +511,134 @@
     animation: textFlicker 0.6s ease-out forwards;
 }
 
-.stripes {
-    display: flex;
-    gap: 5px;
-}
-
-.stripe {
-    width: 4px;
-    height: 22px;
-    background-color: #d10101;
-    transform: skewX(-20deg);
+.playerLevel {
+    font-family: var(--font-sans), sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #d10101;
+    text-shadow: 0 0 8px rgba(209,1,1,0.8);
     opacity: 0;
-    transform-origin: bottom center;
+    animation: none;
 }
 
-.hudRight.active .stripe {
-    opacity: 0.8;
-    animation: stripeEnter 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+.hudRight.active .playerLevel {
+    animation: textFlicker 0.6s ease-out 0.15s forwards;
 }
 
-.hudRight.active .stripe:nth-child(1) { animation-delay: 0.4s; }
-.hudRight.active .stripe:nth-child(2) { animation-delay: 0.5s; }
-.hudRight.active .stripe:nth-child(3) { animation-delay: 0.6s; }
-.hudRight.active .stripe:nth-child(4) { animation-delay: 0.7s; }
+/* ── Stat rows (HP / MP) ── */
+.statRow {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+    opacity: 0;
+    transform: translateX(8px);
+}
 
-/* ─── Explore Button ───────────────────────────────────────── */
+.hudRight.active .statRow:nth-child(3) {
+    animation: statRowIn 0.4s ease-out 0.35s forwards;
+}
+
+.hudRight.active .statRow:nth-child(4) {
+    animation: statRowIn 0.4s ease-out 0.5s forwards;
+}
+
+@keyframes statRowIn {
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.statLabel {
+    font-family: var(--font-sans), sans-serif;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #d10101;
+    width: 24px;
+    text-align: center;
+    text-shadow: 0 0 6px rgba(209,1,1,0.6);
+    flex-shrink: 0;
+}
+
+.statBarTrack {
+    flex: 1;
+    height: 14px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(209, 1, 1, 0.35);
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+/* Inner tick marks for game feel */
+.statBarTrack::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 19px,
+        rgba(0,0,0,0.4) 19px,
+        rgba(0,0,0,0.4) 20px
+    );
+    z-index: 2;
+    pointer-events: none;
+}
+
+.statBarFill {
+    height: 100%;
+    width: 0%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.4s;
+    z-index: 1;
+}
+
+/* HP bar — red */
+.healthFill {
+    background: linear-gradient(90deg, #7a0000 0%, #d10101 60%, #ff5252 100%);
+    box-shadow: 0 0 10px rgba(209, 1, 1, 0.8), inset 0 1px 0 rgba(255,100,100,0.4);
+    animation: barShine 2.5s linear infinite;
+    background-size: 200% 100%;
+}
+
+.hudRight.active .healthFill {
+    width: 100%;
+}
+
+/* MP bar — blue/purple */
+.manaFill {
+    background: linear-gradient(90deg, #001a7a 0%, #2b5fff 60%, #6fa0ff 100%);
+    box-shadow: 0 0 10px rgba(43, 95, 255, 0.8), inset 0 1px 0 rgba(150,180,255,0.4);
+    animation: barShine 2.5s linear infinite 0.5s;
+    background-size: 200% 100%;
+}
+
+.hudRight.active .manaFill {
+    width: 82%;
+}
+
+.statValue {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-sans), monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: rgba(255,255,255,0.85);
+    text-shadow: 0 0 4px rgba(0,0,0,0.8);
+    z-index: 3;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EXPLORE BUTTON
+   ═══════════════════════════════════════════════════════════════ */
 
 .exploreButtonContainer {
     position: absolute;
@@ -415,6 +673,18 @@
     position: relative;
     overflow: hidden;
     border-radius: 4px;
+    /* Clip the button corners too */
+    clip-path: polygon(10px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 10px);
+}
+
+/* Continuous button pulse when visible */
+.exploreButtonContainer.active .exploreButton {
+    animation: buttonPulse 2s ease-in-out infinite;
+}
+
+@keyframes buttonPulse {
+    0%, 100% { box-shadow: 0 0 15px rgba(209,1,1,0.4); }
+    50%       { box-shadow: 0 0 30px rgba(209,1,1,0.8), 0 0 50px rgba(209,1,1,0.3); }
 }
 
 .exploreButton::before {
@@ -424,12 +694,10 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.3),
-        transparent
-    );
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent);
 }
 
 .exploreButton:hover::before {
@@ -448,37 +716,39 @@
     transform: scale(0.98);
 }
 
-/* ─── Keyframe Animations ───────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   KEYFRAME ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
 
 @keyframes textFlicker {
-    0% { opacity: 0; text-shadow: none; }
-    10% { opacity: 0.5; text-shadow: 0 0 4px #d10101; }
-    20% { opacity: 0.1; text-shadow: none; }
-    30% { opacity: 0.75; text-shadow: 0 0 10px #d10101; }
-    40% { opacity: 0.3; text-shadow: none; }
-    55% { opacity: 0.9; text-shadow: 0 0 12px #d10101; }
-    70% { opacity: 0.6; text-shadow: none; }
-    85% { opacity: 1; text-shadow: 0 0 15px #d10101; }
-    100% { opacity: 1; text-shadow: 0 0 10px rgba(209, 1, 1, 0.8); }
+    0%   { opacity: 0;    text-shadow: none; }
+    10%  { opacity: 0.5;  text-shadow: 0 0 4px #d10101; }
+    20%  { opacity: 0.1;  text-shadow: none; }
+    30%  { opacity: 0.75; text-shadow: 0 0 10px #d10101; }
+    40%  { opacity: 0.3;  text-shadow: none; }
+    55%  { opacity: 0.9;  text-shadow: 0 0 12px #d10101; }
+    70%  { opacity: 0.6;  text-shadow: none; }
+    85%  { opacity: 1;    text-shadow: 0 0 15px #d10101; }
+    100% { opacity: 1;    text-shadow: 0 0 10px rgba(209, 1, 1, 0.8); }
 }
 
 @keyframes gemSpawn {
-    0% { transform: scale(0) rotate(-45deg); opacity: 0; }
-    70% { transform: scale(1.3) rotate(15deg); opacity: 0.8; }
+    0%   { transform: scale(0) rotate(-45deg); opacity: 0; }
+    70%  { transform: scale(1.3) rotate(15deg); opacity: 0.8; }
     100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
 @keyframes stripeEnter {
-    0% { transform: skewX(-20deg) scaleY(0); opacity: 0; }
+    0%   { transform: skewX(-20deg) scaleY(0); opacity: 0; }
     100% { transform: skewX(-20deg) scaleY(1); opacity: 0.8; }
 }
 
 @keyframes shineSweep {
-    0% { left: -100%; }
+    0%   { left: -100%; }
     100% { left: 100%; }
 }
 
 @keyframes barShine {
-    0% { background-position: 0% 50%; }
+    0%   { background-position: 0% 50%; }
     100% { background-position: 200% 50%; }
 }
