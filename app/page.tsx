@@ -158,15 +158,111 @@ export default function Home() {
       {/* Rotating Border Ring */}
       <div className={styles.borderRing} aria-hidden="true">
         <svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" className={styles.borderRingSvg}>
+          <defs>
+            {/* Green orb — top */}
+            <radialGradient id="orbG_top" cx="35%" cy="28%" r="65%" gradientUnits="objectBoundingBox">
+              <stop offset="0%"   stopColor="#b8ffd0" />
+              <stop offset="30%"  stopColor="#0fd63a" />
+              <stop offset="65%"  stopColor="#026d26" />
+              <stop offset="100%" stopColor="#001208" />
+            </radialGradient>
+            {/* Gold orb — bottom */}
+            <radialGradient id="orbG_bottom" cx="35%" cy="28%" r="65%" gradientUnits="objectBoundingBox">
+              <stop offset="0%"   stopColor="#fff5b0" />
+              <stop offset="30%"  stopColor="#f0b800" />
+              <stop offset="65%"  stopColor="#946808" />
+              <stop offset="100%" stopColor="#261600" />
+            </radialGradient>
+            {/* Blue orb — left */}
+            <radialGradient id="orbG_left" cx="35%" cy="28%" r="65%" gradientUnits="objectBoundingBox">
+              <stop offset="0%"   stopColor="#c0d0ff" />
+              <stop offset="30%"  stopColor="#3a5aee" />
+              <stop offset="65%"  stopColor="#0f197a" />
+              <stop offset="100%" stopColor="#02040f" />
+            </radialGradient>
+            {/* Red orb — right */}
+            <radialGradient id="orbG_right" cx="35%" cy="28%" r="65%" gradientUnits="objectBoundingBox">
+              <stop offset="0%"   stopColor="#ffffff" />
+              <stop offset="20%"  stopColor="#ffaaaa" />
+              <stop offset="55%"  stopColor="#d10101" />
+              <stop offset="100%" stopColor="#3a0000" />
+            </radialGradient>
+          </defs>
+
           <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(209,1,1,0.15)" strokeWidth="1" strokeDasharray="8 24" />
           <circle cx="400" cy="400" r="350" fill="none" stroke="rgba(209,1,1,0.08)" strokeWidth="1" strokeDasharray="4 40" />
-          {/* Rotating diamonds */}
-          <polygon points="400,20 414,34 400,48 386,34" fill="#d10101" opacity="0.9" className={styles.orbDot} />
-          <polygon points="400,752 414,766 400,780 386,766" fill="#d10101" opacity="0.9" className={styles.orbDot} />
-          <polygon points="20,400 34,386 48,400 34,414" fill="#d10101" opacity="0.9" className={styles.orbDot} />
-          <polygon points="752,400 766,386 780,400 766,414" fill="#d10101" opacity="0.9" className={styles.orbDot} />
+
+          {/* ── Green orb (top, center 400,34) ── */}
+          <g>
+            <circle cx="400" cy="34" r="22" fill="#026d26" opacity="0.18" />
+            <circle cx="400" cy="34" r="14" fill="#0fd63a" opacity="0.08" />
+            {/* shadow base */}
+            <polygon points="400,12 418,34 400,56 382,34" fill="#001208" opacity="0.7" />
+            {/* main gradient face */}
+            <polygon points="400,12 418,34 400,56 382,34" fill="url(#orbG_top)" />
+            {/* upper-left highlight facet */}
+            <polygon points="400,12 382,34 400,34" fill="#c8ffda" opacity="0.38" />
+            {/* upper-right mid facet */}
+            <polygon points="400,12 418,34 400,34" fill="#0fd63a" opacity="0.12" />
+            {/* lower-right shadow facet */}
+            <polygon points="418,34 400,56 400,34" fill="#001208" opacity="0.55" />
+            {/* lower-left shadow facet */}
+            <polygon points="382,34 400,56 400,34" fill="#001e0a" opacity="0.35" />
+            {/* edge stroke */}
+            <polygon points="400,12 418,34 400,56 382,34" fill="none" stroke="#4dff80" strokeWidth="0.6" opacity="0.6" />
+            {/* specular */}
+            <ellipse cx="392" cy="22" rx="3.5" ry="2.5" fill="white" opacity="0.55" />
+            <circle  cx="392" cy="21" r="1.2" fill="white" opacity="0.9" />
+          </g>
+
+          {/* ── Gold orb (bottom, center 400,766) ── */}
+          <g>
+            <circle cx="400" cy="766" r="22" fill="#946808" opacity="0.18" />
+            <circle cx="400" cy="766" r="14" fill="#f0b800" opacity="0.08" />
+            <polygon points="400,744 418,766 400,788 382,766" fill="#261600" opacity="0.7" />
+            <polygon points="400,744 418,766 400,788 382,766" fill="url(#orbG_bottom)" />
+            <polygon points="400,744 382,766 400,766" fill="#fff5c0" opacity="0.38" />
+            <polygon points="400,744 418,766 400,766" fill="#f0b800" opacity="0.12" />
+            <polygon points="418,766 400,788 400,766" fill="#261600" opacity="0.55" />
+            <polygon points="382,766 400,788 400,766" fill="#1a1000" opacity="0.35" />
+            <polygon points="400,744 418,766 400,788 382,766" fill="none" stroke="#ffd966" strokeWidth="0.6" opacity="0.6" />
+            <ellipse cx="392" cy="754" rx="3.5" ry="2.5" fill="white" opacity="0.55" />
+            <circle  cx="392" cy="753" r="1.2" fill="white" opacity="0.9" />
+          </g>
+
+          {/* ── Blue orb (left, center 34,400) ── */}
+          <g>
+            <circle cx="34" cy="400" r="22" fill="#0f197a" opacity="0.18" />
+            <circle cx="34" cy="400" r="14" fill="#3a5aee" opacity="0.08" />
+            <polygon points="34,378 56,400 34,422 12,400" fill="#02040f" opacity="0.7" />
+            <polygon points="34,378 56,400 34,422 12,400" fill="url(#orbG_left)" />
+            <polygon points="34,378 12,400 34,400" fill="#d0dcff" opacity="0.38" />
+            <polygon points="34,378 56,400 34,400" fill="#3a5aee" opacity="0.12" />
+            <polygon points="56,400 34,422 34,400" fill="#02040f" opacity="0.55" />
+            <polygon points="12,400 34,422 34,400" fill="#03071a" opacity="0.35" />
+            <polygon points="34,378 56,400 34,422 12,400" fill="none" stroke="#6699ff" strokeWidth="0.6" opacity="0.6" />
+            <ellipse cx="24" cy="390" rx="3.5" ry="2.5" fill="white" opacity="0.55" />
+            <circle  cx="24" cy="389" r="1.2" fill="white" opacity="0.9" />
+          </g>
+
+          {/* ── Red orb (right, center 766,400) ── */}
+          <g>
+            <circle cx="766" cy="400" r="22" fill="#d10101" opacity="0.18" />
+            <circle cx="766" cy="400" r="14" fill="#ff5555" opacity="0.08" />
+            <polygon points="766,378 788,400 766,422 744,400" fill="#3a0000" opacity="0.7" />
+            <polygon points="766,378 788,400 766,422 744,400" fill="url(#orbG_right)" />
+            <polygon points="766,378 744,400 766,400" fill="#ffe0e0" opacity="0.38" />
+            <polygon points="766,378 788,400 766,400" fill="#ff5555" opacity="0.12" />
+            <polygon points="788,400 766,422 766,400" fill="#3a0000" opacity="0.55" />
+            <polygon points="744,400 766,422 766,400" fill="#220000" opacity="0.35" />
+            <polygon points="766,378 788,400 766,422 744,400" fill="none" stroke="#ff8080" strokeWidth="0.6" opacity="0.6" />
+            <ellipse cx="756" cy="390" rx="3.5" ry="2.5" fill="white" opacity="0.55" />
+            <circle  cx="756" cy="389" r="1.2" fill="white" opacity="0.9" />
+          </g>
+
         </svg>
       </div>
+
 
       {/* HUD Left Panel */}
       <div className={`${styles.hudLeft} ${showSecondHUD ? styles.active : ""}`}>
@@ -260,7 +356,7 @@ export default function Home() {
             <span className={styles.statLabel}>MP</span>
             <div className={styles.statBarTrack}>
               <div className={`${styles.statBarFill} ${styles.manaFill}`} />
-              <span className={styles.statValue}>999 / 999</span>
+              <span className={styles.statValue}>891 / 999</span>
             </div>
           </div>
         </div>

@@ -18,7 +18,7 @@
 .knightContainer {
     position: absolute;
     inset: 0;
-    z-index: 2;
+    z-index: 9;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -30,12 +30,7 @@
     height: 100vh;
     object-fit: contain;
     object-position: center bottom;
-    z-index: 2;
     will-change: transform, opacity;
-}
-
-.knightOverlay {
-    z-index: 3;
 }
 
 /* ─── Grass ─────────────────────────────────────────────────── */
@@ -63,7 +58,7 @@
 .titleContainer {
     position: absolute;
     inset: 0;
-    z-index: 1;
+    z-index: 5;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -133,7 +128,7 @@
     height: 3px;
     background: #d10101;
     border-radius: 50%;
-    box-shadow: 0 0 6px #d10101, 0 0 12px rgba(209,1,1,0.4);
+    box-shadow: 0 0 6px #d10101, 0 0 12px rgba(209, 1, 1, 0.4);
     /* Spread particles across the viewport using --i */
     left: calc(5% + (var(--i) * 8%));
     bottom: -10px;
@@ -143,10 +138,23 @@
 }
 
 @keyframes floatParticle {
-    0%   { transform: translateY(0)   scale(1);   opacity: 0; }
-    10%  { opacity: 0.9; }
-    80%  { opacity: 0.6; }
-    100% { transform: translateY(-95vh) scale(0.3); opacity: 0; }
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.9;
+    }
+
+    80% {
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: translateY(-95vh) scale(0.3);
+        opacity: 0;
+    }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -169,12 +177,67 @@
     width: 100%;
     height: 100%;
     animation: ringRotate 20s linear infinite;
-    filter: drop-shadow(0 0 6px rgba(209,1,1,0.5));
+    filter: drop-shadow(0 0 6px rgba(209, 1, 1, 0.5));
 }
 
 @keyframes ringRotate {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SYSTEM LINES OVERLAY
+   ═══════════════════════════════════════════════════════════════ */
+
+.systemLines {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1s ease-out 0.2s;
+}
+
+.systemLines.active {
+    opacity: 1;
+}
+
+.systemLinesSvg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    /* Subtle flicker loop */
+    animation: sysFlicker 8s ease-in-out infinite 2s;
+}
+
+@keyframes sysFlicker {
+
+    0%,
+    92%,
+    100% {
+        opacity: 1;
+    }
+
+    93% {
+        opacity: 0.6;
+    }
+
+    94% {
+        opacity: 1;
+    }
+
+    95% {
+        opacity: 0.5;
+    }
+
+    96% {
+        opacity: 1;
+    }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -222,14 +285,12 @@
     left: 0;
     width: 32px;
     height: 32px;
-    background: linear-gradient(
-        135deg,
-        transparent 0%,
-        transparent calc(50% - 1px),
-        #d10101 calc(50% - 1px),
-        #d10101 calc(50% + 1px),
-        transparent calc(50% + 1px)
-    );
+    background: linear-gradient(135deg,
+            transparent 0%,
+            transparent calc(50% - 1px),
+            #d10101 calc(50% - 1px),
+            #d10101 calc(50% + 1px),
+            transparent calc(50% + 1px));
     pointer-events: none;
     z-index: 1;
     filter: drop-shadow(0 0 4px #d10101);
@@ -254,9 +315,17 @@
 }
 
 @keyframes hudPulse {
-    0%, 100% { box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(209,1,1,0.06); }
-    50%       { box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 30px rgba(209,1,1,0.14); }
+
+    0%,
+    100% {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(209, 1, 1, 0.06);
+    }
+
+    50% {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(209, 1, 1, 0.14);
+    }
 }
+
 /* Decorative scan line that sweeps across the panel */
 .scanLine {
     position: absolute;
@@ -264,7 +333,7 @@
     left: 0;
     width: 100%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(209,1,1,0.6), transparent);
+    background: linear-gradient(90deg, transparent, rgba(209, 1, 1, 0.6), transparent);
     pointer-events: none;
     opacity: 0;
     z-index: 10;
@@ -279,10 +348,23 @@
 }
 
 @keyframes scanSweep {
-    0%   { top: 0%;   opacity: 0; }
-    5%   { opacity: 1; }
-    90%  { opacity: 0.6; }
-    100% { top: 100%; opacity: 0; }
+    0% {
+        top: 0%;
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 0.6;
+    }
+
+    100% {
+        top: 100%;
+        opacity: 0;
+    }
 }
 
 
@@ -363,12 +445,21 @@
 /* Gem continuous spin on active */
 .hudLeft.active .hudGemIcon:nth-child(1) {
     animation: gemSpawn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s forwards,
-               gemFloat 3s ease-in-out 1.2s infinite;
+        gemFloat 3s ease-in-out 1.2s infinite;
 }
 
 @keyframes gemFloat {
-    0%, 100% { transform: scale(1) translateY(0); filter: drop-shadow(0 0 6px #d10101); }
-    50%       { transform: scale(1) translateY(-3px); filter: drop-shadow(0 0 10px #ff3b3b); }
+
+    0%,
+    100% {
+        transform: scale(1) translateY(0);
+        filter: drop-shadow(0 0 6px #d10101);
+    }
+
+    50% {
+        transform: scale(1) translateY(-3px);
+        filter: drop-shadow(0 0 10px #ff3b3b);
+    }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -414,14 +505,12 @@
     left: 0;
     width: 32px;
     height: 32px;
-    background: linear-gradient(
-        135deg,
-        transparent 0%,
-        transparent calc(50% - 1px),
-        #d10101 calc(50% - 1px),
-        #d10101 calc(50% + 1px),
-        transparent calc(50% + 1px)
-    );
+    background: linear-gradient(135deg,
+            transparent 0%,
+            transparent calc(50% - 1px),
+            #d10101 calc(50% - 1px),
+            #d10101 calc(50% + 1px),
+            transparent calc(50% + 1px));
     pointer-events: none;
     z-index: 1;
     filter: drop-shadow(0 0 4px #d10101);
@@ -477,15 +566,20 @@
 .cornerOrnament::after {
     width: 16px;
     height: 16px;
-    border-bottom-color: rgba(209,1,1,0.5);
-    border-left-color: rgba(209,1,1,0.5);
+    border-bottom-color: rgba(209, 1, 1, 0.5);
+    border-left-color: rgba(209, 1, 1, 0.5);
     border-radius: 1px;
     animation: ornamentSpin 2s linear infinite reverse;
 }
 
 @keyframes ornamentSpin {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to   { transform: translate(-50%, -50%) rotate(360deg); }
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
 }
 
 /* ── Player name row ── */
@@ -517,7 +611,7 @@
     font-weight: 700;
     letter-spacing: 2px;
     color: #d10101;
-    text-shadow: 0 0 8px rgba(209,1,1,0.8);
+    text-shadow: 0 0 8px rgba(209, 1, 1, 0.8);
     opacity: 0;
     animation: none;
 }
@@ -536,16 +630,20 @@
     transform: translateX(8px);
 }
 
-.hudRight.active .statRow:nth-child(3) {
+/* statRow nth-child offset: child 1=cornerOrnament, 2=scanLine, 3=playerNameRow, 4=HP row, 5=MP row */
+.hudRight.active .statRow:nth-child(4) {
     animation: statRowIn 0.4s ease-out 0.35s forwards;
 }
 
-.hudRight.active .statRow:nth-child(4) {
+.hudRight.active .statRow:nth-child(5) {
     animation: statRowIn 0.4s ease-out 0.5s forwards;
 }
 
 @keyframes statRowIn {
-    to { opacity: 1; transform: translateX(0); }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .statLabel {
@@ -556,7 +654,7 @@
     color: #d10101;
     width: 24px;
     text-align: center;
-    text-shadow: 0 0 6px rgba(209,1,1,0.6);
+    text-shadow: 0 0 6px rgba(209, 1, 1, 0.6);
     flex-shrink: 0;
 }
 
@@ -564,7 +662,7 @@
     flex: 1;
     height: 14px;
     background: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(209, 1, 1, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     position: relative;
     overflow: hidden;
     border-radius: 2px;
@@ -575,13 +673,11 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-image: repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 19px,
-        rgba(0,0,0,0.4) 19px,
-        rgba(0,0,0,0.4) 20px
-    );
+    background-image: repeating-linear-gradient(90deg,
+            transparent,
+            transparent 19px,
+            rgba(0, 0, 0, 0.4) 19px,
+            rgba(0, 0, 0, 0.4) 20px);
     z-index: 2;
     pointer-events: none;
 }
@@ -599,25 +695,35 @@
 /* HP bar — red */
 .healthFill {
     background: linear-gradient(90deg, #7a0000 0%, #d10101 60%, #ff5252 100%);
-    box-shadow: 0 0 10px rgba(209, 1, 1, 0.8), inset 0 1px 0 rgba(255,100,100,0.4);
-    animation: barShine 2.5s linear infinite;
     background-size: 200% 100%;
+    box-shadow: 0 0 10px rgba(209, 1, 1, 0.8), inset 0 1px 0 rgba(255, 100, 100, 0.4);
+    animation: barShine 2.5s linear infinite;
 }
 
 .hudRight.active .healthFill {
     width: 100%;
 }
 
-/* MP bar — blue/purple */
+/* MP bar — blue */
 .manaFill {
     background: linear-gradient(90deg, #001a7a 0%, #2b5fff 60%, #6fa0ff 100%);
-    box-shadow: 0 0 10px rgba(43, 95, 255, 0.8), inset 0 1px 0 rgba(150,180,255,0.4);
-    animation: barShine 2.5s linear infinite 0.5s;
     background-size: 200% 100%;
+    box-shadow: 0 0 10px rgba(43, 95, 255, 0.8), inset 0 1px 0 rgba(150, 180, 255, 0.4);
+    animation: manaShine 2.5s linear infinite 0.5s;
 }
 
 .hudRight.active .manaFill {
     width: 82%;
+}
+
+@keyframes manaShine {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 200% 50%;
+    }
 }
 
 .statValue {
@@ -629,8 +735,8 @@
     font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.5px;
-    color: rgba(255,255,255,0.85);
-    text-shadow: 0 0 4px rgba(0,0,0,0.8);
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
     z-index: 3;
     pointer-events: none;
     white-space: nowrap;
@@ -683,8 +789,15 @@
 }
 
 @keyframes buttonPulse {
-    0%, 100% { box-shadow: 0 0 15px rgba(209,1,1,0.4); }
-    50%       { box-shadow: 0 0 30px rgba(209,1,1,0.8), 0 0 50px rgba(209,1,1,0.3); }
+
+    0%,
+    100% {
+        box-shadow: 0 0 15px rgba(209, 1, 1, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(209, 1, 1, 0.8), 0 0 50px rgba(209, 1, 1, 0.3);
+    }
 }
 
 .exploreButton::before {
@@ -721,34 +834,97 @@
    ═══════════════════════════════════════════════════════════════ */
 
 @keyframes textFlicker {
-    0%   { opacity: 0;    text-shadow: none; }
-    10%  { opacity: 0.5;  text-shadow: 0 0 4px #d10101; }
-    20%  { opacity: 0.1;  text-shadow: none; }
-    30%  { opacity: 0.75; text-shadow: 0 0 10px #d10101; }
-    40%  { opacity: 0.3;  text-shadow: none; }
-    55%  { opacity: 0.9;  text-shadow: 0 0 12px #d10101; }
-    70%  { opacity: 0.6;  text-shadow: none; }
-    85%  { opacity: 1;    text-shadow: 0 0 15px #d10101; }
-    100% { opacity: 1;    text-shadow: 0 0 10px rgba(209, 1, 1, 0.8); }
+    0% {
+        opacity: 0;
+        text-shadow: none;
+    }
+
+    10% {
+        opacity: 0.5;
+        text-shadow: 0 0 4px #d10101;
+    }
+
+    20% {
+        opacity: 0.1;
+        text-shadow: none;
+    }
+
+    30% {
+        opacity: 0.75;
+        text-shadow: 0 0 10px #d10101;
+    }
+
+    40% {
+        opacity: 0.3;
+        text-shadow: none;
+    }
+
+    55% {
+        opacity: 0.9;
+        text-shadow: 0 0 12px #d10101;
+    }
+
+    70% {
+        opacity: 0.6;
+        text-shadow: none;
+    }
+
+    85% {
+        opacity: 1;
+        text-shadow: 0 0 15px #d10101;
+    }
+
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 10px rgba(209, 1, 1, 0.8);
+    }
 }
 
 @keyframes gemSpawn {
-    0%   { transform: scale(0) rotate(-45deg); opacity: 0; }
-    70%  { transform: scale(1.3) rotate(15deg); opacity: 0.8; }
-    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    0% {
+        transform: scale(0) rotate(-45deg);
+        opacity: 0;
+    }
+
+    70% {
+        transform: scale(1.3) rotate(15deg);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
 }
 
 @keyframes stripeEnter {
-    0%   { transform: skewX(-20deg) scaleY(0); opacity: 0; }
-    100% { transform: skewX(-20deg) scaleY(1); opacity: 0.8; }
+    0% {
+        transform: skewX(-20deg) scaleY(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: skewX(-20deg) scaleY(1);
+        opacity: 0.8;
+    }
 }
 
 @keyframes shineSweep {
-    0%   { left: -100%; }
-    100% { left: 100%; }
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
 }
 
 @keyframes barShine {
-    0%   { background-position: 0% 50%; }
-    100% { background-position: 200% 50%; }
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 200% 50%;
+    }
 }
