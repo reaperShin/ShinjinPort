@@ -161,30 +161,30 @@ export default function Home() {
           <defs>
             {/* Green orb — top */}
             <radialGradient id="orbG_top" cx="35%" cy="28%" r="65%" gradientUnits="objectBoundingBox">
-              <stop offset="0%"   stopColor="#b8ffd0" />
-              <stop offset="30%"  stopColor="#0fd63a" />
-              <stop offset="65%"  stopColor="#026d26" />
+              <stop offset="0%" stopColor="#b8ffd0" />
+              <stop offset="30%" stopColor="#0fd63a" />
+              <stop offset="65%" stopColor="#026d26" />
               <stop offset="100%" stopColor="#001208" />
             </radialGradient>
             {/* Gold orb — bottom */}
             <radialGradient id="orbG_bottom" cx="35%" cy="28%" r="65%" gradientUnits="objectBoundingBox">
-              <stop offset="0%"   stopColor="#fff5b0" />
-              <stop offset="30%"  stopColor="#f0b800" />
-              <stop offset="65%"  stopColor="#946808" />
+              <stop offset="0%" stopColor="#fff5b0" />
+              <stop offset="30%" stopColor="#f0b800" />
+              <stop offset="65%" stopColor="#946808" />
               <stop offset="100%" stopColor="#261600" />
             </radialGradient>
             {/* Blue orb — left */}
             <radialGradient id="orbG_left" cx="35%" cy="28%" r="65%" gradientUnits="objectBoundingBox">
-              <stop offset="0%"   stopColor="#c0d0ff" />
-              <stop offset="30%"  stopColor="#3a5aee" />
-              <stop offset="65%"  stopColor="#0f197a" />
+              <stop offset="0%" stopColor="#c0d0ff" />
+              <stop offset="30%" stopColor="#3a5aee" />
+              <stop offset="65%" stopColor="#0f197a" />
               <stop offset="100%" stopColor="#02040f" />
             </radialGradient>
             {/* Red orb — right */}
             <radialGradient id="orbG_right" cx="35%" cy="28%" r="65%" gradientUnits="objectBoundingBox">
-              <stop offset="0%"   stopColor="#ffffff" />
-              <stop offset="20%"  stopColor="#ffaaaa" />
-              <stop offset="55%"  stopColor="#d10101" />
+              <stop offset="0%" stopColor="#ffffff" />
+              <stop offset="20%" stopColor="#ffaaaa" />
+              <stop offset="55%" stopColor="#d10101" />
               <stop offset="100%" stopColor="#3a0000" />
             </radialGradient>
           </defs>
@@ -212,7 +212,7 @@ export default function Home() {
             <polygon points="400,12 418,34 400,56 382,34" fill="none" stroke="#4dff80" strokeWidth="0.6" opacity="0.6" />
             {/* specular */}
             <ellipse cx="392" cy="22" rx="3.5" ry="2.5" fill="white" opacity="0.55" />
-            <circle  cx="392" cy="21" r="1.2" fill="white" opacity="0.9" />
+            <circle cx="392" cy="21" r="1.2" fill="white" opacity="0.9" />
           </g>
 
           {/* ── Gold orb (bottom, center 400,766) ── */}
@@ -227,7 +227,7 @@ export default function Home() {
             <polygon points="382,766 400,788 400,766" fill="#1a1000" opacity="0.35" />
             <polygon points="400,744 418,766 400,788 382,766" fill="none" stroke="#ffd966" strokeWidth="0.6" opacity="0.6" />
             <ellipse cx="392" cy="754" rx="3.5" ry="2.5" fill="white" opacity="0.55" />
-            <circle  cx="392" cy="753" r="1.2" fill="white" opacity="0.9" />
+            <circle cx="392" cy="753" r="1.2" fill="white" opacity="0.9" />
           </g>
 
           {/* ── Blue orb (left, center 34,400) ── */}
@@ -242,7 +242,7 @@ export default function Home() {
             <polygon points="12,400 34,422 34,400" fill="#03071a" opacity="0.35" />
             <polygon points="34,378 56,400 34,422 12,400" fill="none" stroke="#6699ff" strokeWidth="0.6" opacity="0.6" />
             <ellipse cx="24" cy="390" rx="3.5" ry="2.5" fill="white" opacity="0.55" />
-            <circle  cx="24" cy="389" r="1.2" fill="white" opacity="0.9" />
+            <circle cx="24" cy="389" r="1.2" fill="white" opacity="0.9" />
           </g>
 
           {/* ── Red orb (right, center 766,400) ── */}
@@ -257,7 +257,7 @@ export default function Home() {
             <polygon points="744,400 766,422 766,400" fill="#220000" opacity="0.35" />
             <polygon points="766,378 788,400 766,422 744,400" fill="none" stroke="#ff8080" strokeWidth="0.6" opacity="0.6" />
             <ellipse cx="756" cy="390" rx="3.5" ry="2.5" fill="white" opacity="0.55" />
-            <circle  cx="756" cy="389" r="1.2" fill="white" opacity="0.9" />
+            <circle cx="756" cy="389" r="1.2" fill="white" opacity="0.9" />
           </g>
 
         </svg>

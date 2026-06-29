@@ -5,7 +5,7 @@
 .heroContainer {
     display: flex;
     width: 100vw;
-    min-height: 100vh;
+    height: 100vh;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -13,8 +13,6 @@
     background-image: radial-gradient(circle at 25% 50%, rgba(130, 10, 10, 0.25) 0%, rgba(0, 0, 0, 0) 60%);
     color: #ffffff;
     font-family: var(--font-sans), sans-serif;
-    padding: 10vh 4vw 4vh 4vw;
-    overflow-x: hidden;
     box-sizing: border-box;
 }
 
@@ -33,8 +31,8 @@
 /* Circular HUD target reticle */
 .portraitWrapper {
     position: relative;
-    width: 380px;
-    height: 380px;
+    width: 40vw;
+    height: 40vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -42,12 +40,12 @@
 
 /* Profile image container */
 .profilePicContainer {
-    width: 320px;
-    height: 320px;
+    width: 450px;
+    height: 450px;
     border-radius: 50%;
     overflow: hidden;
     border: 3px solid #d10101;
-    box-shadow: 0 0 30px rgba(209, 1, 1, 0.5), inset 0 0 20px rgba(0,0,0,0.8);
+    box-shadow: 0 0 30px rgba(209, 1, 1, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.8);
     position: relative;
     z-index: 2;
     background: radial-gradient(circle, rgba(209, 1, 1, 0.6) 0%, rgba(20, 0, 0, 0.95) 75%);
@@ -58,7 +56,7 @@
     height: 100%;
     object-fit: cover;
     object-position: top center;
-    filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
     transition: transform 0.3s ease;
 }
 
@@ -69,10 +67,10 @@
 /* Rotating outer HUD rings */
 .hudRingOuter {
     position: absolute;
-    width: 370px;
-    height: 370px;
+    width: 480px;
+    height: 480px;
     border-radius: 50%;
-    border: 2px dashed rgba(209, 1, 1, 0.4);
+    border: 3px dashed rgba(223, 33, 33, 0.336);
     animation: rotateCW 25s linear infinite;
     pointer-events: none;
     z-index: 1;
@@ -80,10 +78,10 @@
 
 .hudRingInner {
     position: absolute;
-    width: 350px;
-    height: 350px;
+    width: 420px;
+    height: 420px;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 3px solid rgba(0, 0, 0, 0);
     border-top: 3px solid #d10101;
     border-bottom: 3px solid #d10101;
     animation: rotateCCW 15s linear infinite;
@@ -94,7 +92,7 @@
 /* HUD Scanning overlay line */
 .hudScannerLine {
     position: absolute;
-    width: 320px;
+    width: 480px;
     height: 4px;
     background: linear-gradient(180deg, rgba(255, 0, 0, 0) 0%, #d10101 50%, rgba(255, 0, 0, 0) 100%);
     opacity: 0.7;
@@ -106,13 +104,13 @@
 /* Floating RPG level badge */
 .levelBadge {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 5px;
+    right: 5px;
     background: #d10101;
     border: 1px solid #ffffff;
     color: #ffffff;
     padding: 4px 12px;
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     font-weight: 800;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -163,7 +161,7 @@
     backdrop-filter: blur(8px);
     position: relative;
     border-radius: 4px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
 .descriptionFrame::before {
@@ -238,7 +236,7 @@
     position: relative;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
 }
 
 .slotBox::before {
@@ -249,7 +247,8 @@
     pointer-events: none;
 }
 
-.slotBox svg, .slotBox img {
+.slotBox svg,
+.slotBox img {
     width: 38px;
     height: 38px;
     transition: transform 0.3s ease;
@@ -264,7 +263,8 @@
     background: rgba(20, 0, 0, 0.65);
 }
 
-.softwareSlot:hover .slotBox svg, .softwareSlot:hover .slotBox img {
+.softwareSlot:hover .slotBox svg,
+.softwareSlot:hover .slotBox img {
     transform: scale(1.12);
 }
 
@@ -293,7 +293,7 @@
     width: 160px;
     text-align: left;
     font-size: 0.75rem;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.8), 0 0 10px rgba(209, 1, 1, 0.3);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8), 0 0 10px rgba(209, 1, 1, 0.3);
     opacity: 0;
     pointer-events: none;
     transform: translateY(10px) translateX(-50%);
@@ -387,29 +387,70 @@
 /* ─── Keyframe Animations ───────────────────────────────────── */
 
 @keyframes rotateCW {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes rotateCCW {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(-360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(-360deg);
+    }
 }
 
 @keyframes scanVertical {
-    0% { top: 30px; opacity: 0; }
-    10% { opacity: 0.7; }
-    90% { opacity: 0.7; }
-    100% { top: 350px; opacity: 0; }
+    0% {
+        top: 30px;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.7;
+    }
+
+    90% {
+        opacity: 0.7;
+    }
+
+    100% {
+        top: 350px;
+        opacity: 0;
+    }
 }
 
 @keyframes badgePulse {
-    0% { transform: scale(1); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(209, 1, 1, 0.8); }
-    50% { transform: scale(1.04); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), 0 0 18px rgba(209, 1, 1, 1); }
-    100% { transform: scale(1); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(209, 1, 1, 0.8); }
+    0% {
+        transform: scale(1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(209, 1, 1, 0.8);
+    }
+
+    50% {
+        transform: scale(1.04);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), 0 0 18px rgba(209, 1, 1, 1);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(209, 1, 1, 0.8);
+    }
 }
 
 @keyframes panelSlideIn {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
